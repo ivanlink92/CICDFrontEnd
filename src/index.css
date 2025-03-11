@@ -1,68 +1,395 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
+/* Global Styles */
 body {
   margin: 0;
+  font-family: "Arial", sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+}
+
+/* Container for the app */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Header Styles */
+header {
+  background-color: #6200ea;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+/* Auth Pages (Login/Register) */
+.auth-container {
   display: flex;
-  place-items: center;
-  min-width: 320px;
+  justify-content: center;
+  align-items: center;
   min-height: 100vh;
+  background-color: #f4f4f9;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
+.auth-form {
+  background: white;
+  padding: 2rem;
   border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+.auth-form h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.auth-form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.auth-form button {
+  width: 100%;
+  padding: 10px;
+  background-color: #6200ea;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.auth-form button:hover {
+  background-color: #3700b3;
+}
+
+.auth-form p {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.auth-form a {
+  color: #6200ea;
+  text-decoration: none;
+}
+
+.auth-form a:hover {
+  text-decoration: underline;
+}
+
+/* Todo List Page */
+.todo-container {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 2rem;
+}
+
+.todo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.todo-header h2 {
+  margin: 0;
+  font-size: 1.75rem;
+}
+
+.todo-header button {
+  background-color: #ff4444;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.todo-header button:hover {
+  background-color: #cc0000;
+}
+
+/* Add Todo Form */
+.add-todo-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 2rem;
+}
+
+.add-todo-form input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.add-todo-form button {
+  padding: 10px 20px;
+  background-color: #00c851;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-todo-form button:hover {
+  background-color: #007e33;
+}
+
+/* Todo Item */
+.todo-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  background-color: #f9f9f9;
+  transition: background-color 0.3s ease;
+}
+
+.todo-item.completed {
+  background-color: #e8f5e9;
+  text-decoration: line-through;
+  color: #666;
+}
+
+.todo-item button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.todo-item button.toggle {
+  background-color: #00c851;
+  color: white;
+}
+
+.todo-item button.toggle:hover {
+  background-color: #007e33;
+}
+
+.todo-item button.delete {
+  background-color: #ff4444;
+  color: white;
+}
+
+.todo-item button.delete:hover {
+  background-color: #cc0000;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .auth-form {
+    padding: 1.5rem;
   }
-  a:hover {
-    color: #747bff;
+
+  .todo-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
   }
-  button {
-    background-color: #f9f9f9;
+
+  .add-todo-form {
+    flex-direction: column;
   }
+
+  .add-todo-form button {
+    width: 100%;
+  }
+}
+/* Popup Form Styles */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-form {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.popup-form h3 {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.popup-form input,
+.popup-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.popup-form textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.popup-form button {
+  width: 100%;
+  padding: 10px;
+  background-color: #6200ea;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.popup-form button:hover {
+  background-color: #3700b3;
+}
+
+/* Task List Styles */
+.task-list {
+  margin-top: 2rem;
+}
+
+.task-item {
+  background: white;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.task-item h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+}
+
+.task-item p {
+  margin: 0;
+  color: #666;
+}
+
+/* Add Task Button */
+.add-task-button {
+  background-color: #00c851;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-task-button:hover {
+  background-color: #007e33;
+}
+
+/* Task Status Styles */
+.task-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.task-status input[type="checkbox"] {
+  cursor: pointer;
+}
+
+.status-label {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Completed Task Styles */
+.task-item.completed {
+  background-color: #e8f5e9; /* Light green background for completed tasks */
+  border-color: #c8e6c9; /* Light green border for completed tasks */
+}
+
+.task-item.completed h4,
+.task-item.completed p {
+  color: #666; /* Gray text for completed tasks */
+}
+
+/* Edit Button Styles */
+.task-item button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.task-item button.edit {
+  background-color: #ffc107; /* Yellow for Edit button */
+  color: white;
+}
+
+.task-item button.edit:hover {
+  background-color: #e0a800; /* Darker yellow on hover */
+}
+
+.task-item button.delete {
+  background-color: #ff4444; /* Red for Delete button */
+  color: white;
+}
+
+.task-item button.delete:hover {
+  background-color: #cc0000; /* Darker red on hover */
+}
+/* Search Field Styles */
+.search-container {
+  margin-bottom: 20px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #6200ea;
+  box-shadow: 0 0 0 2px rgba(98, 0, 234, 0.2);
 }
