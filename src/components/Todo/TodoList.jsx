@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 
 const TodoList = () => {
-  const { user, logout } = useContext(AuthContext);
+  const { user, logout, loading } = useContext(AuthContext);
   const [todos, setTodos] = useState([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
@@ -12,6 +12,13 @@ const TodoList = () => {
   const [editingTask, setEditingTask] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+
+  // Wait until loading is complete
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate("/login"); // Redirect if not logged in
+    }
+  }, [loading, user, navigate]);
 
   // Load todos for the current user
   useEffect(() => {

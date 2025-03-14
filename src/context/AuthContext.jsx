@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { createContext } from "react";
+import React, { createContext, useState, useEffect } from "react";
 
-// Create and export the AuthContext
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true); // Add a loading state
 
   // Check if user is logged in on app load
   useEffect(() => {
@@ -13,6 +12,7 @@ export const AuthProvider = ({ children }) => {
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
+    setLoading(false); // Mark loading as complete
   }, []);
 
   const register = (email, password) => {
@@ -67,7 +67,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, register, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, register, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

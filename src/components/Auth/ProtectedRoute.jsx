@@ -3,12 +3,16 @@ import { Navigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 
 const ProtectedRoute = ({ children }) => {
-  const { user } = useContext(AuthContext);
+  const { user, loading } = useContext(AuthContext);
 
-  // Check localStorage if user is not yet available in context
-  const storedUser = localStorage.getItem("user");
+  // Check localStorage directly if user is not yet available
+  const storedUser = localStorage.getItem("currentUser");
 
-  // If there's no user in context or localStorage, redirect to the Login page
+  if (loading) {
+    return <div>Loading...</div>; // Show a loading indicator
+  }
+
+  // If there's no user in context or localStorage, redirect to login
   if (!user && !storedUser) {
     return <Navigate to="/login" />;
   }

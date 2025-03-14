@@ -1,13 +1,20 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext"; // Import AuthContext
+import { AuthContext } from "../../context/AuthContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const { login } = useContext(AuthContext);
+  const { user, login, loading } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  // Redirect to /todos if the user is already logged in
+  useEffect(() => {
+    if (user) {
+      navigate("/todos");
+    }
+  }, [user, navigate]);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -25,6 +32,10 @@ const Login = () => {
       setError("Invalid email or password.");
     }
   };
+
+  if (loading) {
+    return <div>Loading...</div>; // Show a loading indicator
+  }
 
   return (
     <div className="auth-container">
