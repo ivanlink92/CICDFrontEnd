@@ -5,7 +5,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider } from "./context/AuthProvider";
 import Login from "./components/Auth/Login";
 import Register from "./components/Auth/Register";
 import TodoList from "./components/Todo/TodoList";
@@ -13,19 +13,12 @@ import ProtectedRoute from "./components/Auth/ProtectedRoute";
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
+    <Router>
+      <AuthProvider>
         <Routes>
-          {/* Default route redirects to /login */}
-          <Route path="/" element={<Navigate to="/login" />} />
-
-          {/* Login page */}
+          <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<Login />} />
-
-          {/* Registration page */}
           <Route path="/register" element={<Register />} />
-
-          {/* TodoList page (protected route) */}
           <Route
             path="/todos"
             element={
@@ -34,12 +27,10 @@ function App() {
               </ProtectedRoute>
             }
           />
-
-          {/* Fallback route for unknown paths */}
           <Route path="*" element={<h1>404 - Page Not Found</h1>} />
         </Routes>
-      </Router>
-    </AuthProvider>
+      </AuthProvider>
+    </Router>
   );
 }
 
