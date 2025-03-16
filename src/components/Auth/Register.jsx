@@ -1,29 +1,28 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext"; // Import AuthContext
+import AuthContext from "../../context/AuthContext";
 
 const Register = () => {
-  const [email, setEmail] = useState("");
+  const { register } = useContext(AuthContext);
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const { register } = useContext(AuthContext);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
+    setError("");
+    setIsLoading(true);
 
-    if (!email || !password) {
-      setError("Please fill in all fields.");
-      return;
-    }
-
-    // Attempt to register the user
-    const registrationSuccess = register(email, password);
-    if (registrationSuccess) {
-      navigate("/todos"); // Redirect to the TodoList page after registration
+    const success = await register(username, password);
+    if (success) {
+      navigate("/todos");
     } else {
-      setError("Email is already registered.");
+      setError("Registration failed. Username might already be taken.");
     }
+
+    setIsLoading(false);
   };
 
   return (
@@ -33,10 +32,10 @@ const Register = () => {
         {error && <p className="error">{error}</p>}
         <form onSubmit={handleRegister}>
           <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
           />
           <input
@@ -46,7 +45,9 @@ const Register = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <button type="submit">Register</button>
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? "Registering..." : "Register"}
+          </button>
         </form>
         <p>
           Already have an account? <a href="/login">Login</a>

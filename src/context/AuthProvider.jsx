@@ -1,71 +1,91 @@
-import React, { useState, useEffect } from "react";
-import { AuthContext } from "./AuthContext"; // Import AuthContext
+import React, { createContext, useState, useEffect } from "react";
+import axios from "axios";
+import AuthContext from "./AuthContext";
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // Check if user is logged in on app load
+  // Check if the user is already logged in on initial load
   useEffect(() => {
+    const token = localStorage.getItem("token");
     const storedUser = localStorage.getItem("currentUser");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+
+    if (token && storedUser) {
+      try {
+        const parsedUser = JSON.parse(storedUser);
+        setUser(parsedUser);
+      } catch (error) {
+        console.error("Failed to parse user data:", error);
+        localStorage.removeItem("currentUser");
+        localStorage.removeItem("token");
+      }
     }
+    setLoading(false);
   }, []);
 
-  const register = (email, password) => {
-    // Get all users from localStorage
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-
-    // Check if the email is already registered
-    const existingUser = users.find((u) => u.email === email);
-    if (existingUser) {
-      return false; // Registration failed (email already exists)
+  // Register a new user
+  const register = async (username, password) => {
+    console.log("Registering user...");
+    try {
+      const response = await axios.post("http://localhost:8000/api/register/", {
+        username,
+        password,
+      });
+      const newUser = response.data;
+      setUser(newUser);
+      localStorage.setItem("currentUser", JSON.stringify(newUser));
+      localStorage.setItem("token", response.data.token);
+      return true; // Registration successful
+    } catch (error) {
+      console.error("Registration failed:", error);
+      return false; // Registration failed
     }
-
-    // Create a new user
-    const newUser = {
-      id: Date.now(), // Unique ID for the user
-      email,
-      password, // Note: In a real app, never store passwords in plain text!
-      todos: [], // Each user has their own todo list
-    };
-
-    // Add the new user to the list of users
-    users.push(newUser);
-    localStorage.setItem("users", JSON.stringify(users));
-
-    // Log the user in after registration
-    setUser(newUser);
-    localStorage.setItem("currentUser", JSON.stringify(newUser));
-
-    return true; // Registration successful
   };
 
-  const login = (email, password) => {
-    // Get all users from localStorage
-    const users = JSON.parse(localStorage.getItem("users")) || [];
+  // Login an existing user
+  const login = async (username, password) => {
+    try {
+      const response = await axios.post("http://localhost:8000/api/login/", {
+        username,
+        password,
+      });
+      const userData = {
+        username, // Add any other user data you need
+        accessToken: response.data.access,
+        refreshToken: response.data.refresh,
+      };
 
-    // Find the user with the matching email and password
-    const userData = users.find(
-      (u) => u.email === email && u.password === password
-    );
-    if (userData) {
       setUser(userData);
       localStorage.setItem("currentUser", JSON.stringify(userData));
+      localStorage.setItem("token", response.data.access); // Store the access token
+      localStorage.setItem("refreshToken", response.data.refresh); // Store the refresh token
       return true; // Login successful
+    } catch (error) {
+      console.error("Login failed:", error);
+      return false; // Login failed
     }
-
-    return false; // Login failed
   };
 
+  // Logout the user
   const logout = () => {
     setUser(null);
     localStorage.removeItem("currentUser");
+    localStorage.removeItem("token");
+  };
+
+  // Provide the context values
+  const value = {
+    user,
+    loading,
+    register,
+    login,
+    logout,
   };
 
   return (
-    <AuthContext.Provider value={{ user, register, login, logout }}>
-      {children}
+    <AuthContext.Provider value={value}>
+      {!loading && children}
     </AuthContext.Provider>
   );
 };
